@@ -150,7 +150,7 @@ static unsigned char twi_read_byte(bool nack) {
 unsigned char twi_writeTo(unsigned char address, unsigned char * buf, unsigned int len, unsigned char sendStop){
   unsigned int i;
   if(!twi_write_start()) return 4;//line busy
-  if(!twi_write_byte(((address << 1) | 0) & 0xFF)) return 2;//received NACK on transmit of address
+  if(!twi_write_byte(((address << 1) | 0) & 0xFF)) {twi_write_stop();return 2;}//received NACK on transmit of address
   for(i=0; i<len; i++){
     if(!twi_write_byte(buf[i])) return 3;//received NACK on transmit of data
   }
